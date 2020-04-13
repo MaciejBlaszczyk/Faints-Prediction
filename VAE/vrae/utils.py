@@ -1,15 +1,13 @@
-from sklearn.manifold import TSNE
-from sklearn.decomposition import TruncatedSVD
-from sklearn.model_selection import train_test_split
-import numpy as np
-from random import randint
 import os
-import matplotlib.pyplot as plt
 from math import floor
-import pandas as pd
+from random import randint
 
-from plotly.graph_objs import *
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import plotly
+from sklearn.decomposition import TruncatedSVD
+from sklearn.manifold import TSNE
 
 
 def plot_clustering(z_run, labels, engine ='plotly', download = False, folder_name ='clustering'):
