@@ -32,10 +32,10 @@ dload = './model_dir'  # download directory
 
 hidden_size = 90
 hidden_layer_depth = 1
-latent_length = 20
+latent_length = 2
 batch_size = 32
 learning_rate = 0.0005
-n_epochs = 10
+n_epochs = 40
 dropout_rate = 0.2
 optimizer = 'Adam'  # options: ADAM, SGD
 cuda = False  # options: True, False
@@ -59,6 +59,7 @@ test_dataset = TensorDataset(torch.from_numpy(X_val))
 sequence_length = X_train.shape[1]
 number_of_features = X_train.shape[2]
 
+
 vrae = VRAE(sequence_length=sequence_length,
             number_of_features=number_of_features,
             hidden_size=hidden_size,
@@ -77,7 +78,7 @@ vrae = VRAE(sequence_length=sequence_length,
             block=block,
             dload=dload)
 
-# vrae.fit(train_dataset)
+vrae.fit(train_dataset)
 # vrae.fit(dataset, save = True)
 # z_run = vrae.transform(dataset, save = True)
 # vrae.save('vrae.pth')
@@ -87,9 +88,23 @@ z_run = vrae.transform(test_dataset)
 # ### Visualize using PCA and tSNE
 
 # In[13]:
+plt.figure()
+def choose_color(label):
+    if label == 0.0:
+        return 'r'
+    elif label == 1.0:
+        return 'b'
+    elif label == 2.0:
+        return 'g'
+    elif label == 3.0:
+        return 'c'
+    else:
+        return 'm'
 
-
-plot_clustering(z_run, y_val, engine='matplotlib', download=False)
+colors = [choose_color(y) for y in y_val[:z_run.shape[0]]]
+plt.scatter(z_run[:, 0], z_run[:, 1], c=colors, s=2)
+plt.show()
+# plot_clustering(z_run, y_val, engine='matplotlib', download=False)
 
 # If plotly to be used as rendering engine, uncomment below line
 # plot_clustering(z_run, y_val, engine='plotly', download = False)

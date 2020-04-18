@@ -10,6 +10,8 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.manifold import TSNE
 
 
+
+
 def plot_clustering(z_run, labels, engine ='plotly', download = False, folder_name ='clustering'):
     """
     Given latent variables for all timeseries, and output of k-means, run PCA and tSNE on latent vectors and color the points using cluster_labels.
