@@ -297,6 +297,8 @@ class VRAE(BaseEstimator, nn.Module):
         self.train()
 
         epoch_loss = 0
+        recon_losses = 0
+        kl_losses = 0
         t = 0
 
         for t, X in enumerate(train_loader):
@@ -316,6 +318,8 @@ class VRAE(BaseEstimator, nn.Module):
 
             # accumulator
             epoch_loss += loss.item()
+            recon_losses += recon_loss.item()
+            kl_losses += kl_loss.item()
 
             self.optimizer.step()
 
@@ -324,6 +328,7 @@ class VRAE(BaseEstimator, nn.Module):
                                                                                     recon_loss.item(), kl_loss.item()))
 
         print('Average loss: {:.4f}'.format(epoch_loss / t))
+        return epoch_loss/t, recon_losses/t, kl_losses/t
 
 
     def fit(self, dataset, save = False):
@@ -340,15 +345,18 @@ class VRAE(BaseEstimator, nn.Module):
                                   shuffle = True,
                                   drop_last=True)
 
+        epoch_loss = 0.0
+        recon_loss = 0.0
+        kl_loss = 0.0
         for i in range(self.n_epochs):
             print('Epoch: %s' % i)
 
-            self._train(train_loader)
+            epoch_loss, recon_loss, kl_loss = self._train(train_loader)
 
         self.is_fitted = True
         if save:
             self.save('model.pth')
-
+        return epoch_loss, recon_loss, kl_loss
 
     def _batch_transform(self, x):
         """
