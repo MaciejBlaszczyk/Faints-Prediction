@@ -78,7 +78,7 @@ vrae = VRAE(sequence_length=sequence_length,
             block=block,
             dload=dload)
 
-# vrae.fit(train_dataset)
+vrae.fit(train_dataset)
 # vrae.fit(dataset, save = True)
 # z_run = vrae.transform(dataset, save = True)
 # vrae.save('vrae.pth')
